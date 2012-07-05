@@ -1,1 +1,1 @@
-This application for registration tasks on the projects.
+This application for registration tasks on the projects
