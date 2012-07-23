@@ -1,0 +1,14 @@
+<project name="StartDB" default="hsql">
+<target name="hsql">
+  <echo message="Starting HSQLDB"/>
+  <java fork="true" dir="." classname="org.hsqldb.Server">
+    <classpath>
+      <pathelement path="lib/hsqldb.jar"/>
+    </classpath>
+    <arg value="-database.0"/>
+    <arg value="database/test"/>
+    <arg value="-dbname.0"/>
+    <arg value="test"/>
+  </java>
+</target>
+</project>
