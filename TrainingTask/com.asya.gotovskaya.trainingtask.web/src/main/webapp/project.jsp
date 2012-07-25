@@ -20,11 +20,10 @@
     <br>Название проекта <b><c:out value="${selected.name}"/></b>
     <br>Сокащенное название <b><c:out value="${selected.abbreviation}"/></b>
     <br>Описание <b><c:out value="${selected.description}"/></b>
-    <form action="ChangeProjectAction">
+    <form action="DeleteProjectAction">
         <input type="hidden" name="id" value="${selected.id}">
-        <br><input type="submit" value="Изменить">
+        <br><input type="submit" value="Удалить">
     </form>
-    <form action="">
 </c:if>
 </body>
 </html>

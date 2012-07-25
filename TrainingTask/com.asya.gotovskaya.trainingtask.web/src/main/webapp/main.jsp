@@ -15,5 +15,8 @@
     <form action="servlet/ProjectAction" method="POST">
         <input type="submit" value="Проекты" />
     </form>
+    <form action="servlet/EmployeAction" method="POST">
+        <input type="submit" value="Сотрудники" />
+    </form>
 </body>
 </html>

@@ -1,0 +1,18 @@
+<project name="ExecuteSchema" default="schemax">
+<target name="schemax" description="Execute the schema">
+        <sql
+                driver="org.hsqldb.jdbcDriver"
+                url="jdbc:hsqldb:hsql://localhost/test"
+                userid="sa"
+                password=""
+                print="yes"
+                src="insertForeignDate.sql"
+                caching="false"
+                showheaders="true"
+                >
+				<classpath>
+				  <pathelement path="lib/hsqldb.jar"/>
+				</classpath>
+        </sql>
+</target>
+</project>
