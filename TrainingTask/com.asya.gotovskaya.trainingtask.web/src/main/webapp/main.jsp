@@ -1,22 +1,15 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.*" %>
 <%--
-  Created by IntelliJ IDEA.
-  User: Asya
-  Date: 16.07.12
-  Time: 12:12
-  To change this template use File | Settings | File Templates.
+  @author asya
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head><title>Simple jsp page</title></head>
 <body>
-    <form action="servlet/ProjectAction" method="POST">
-        <input type="submit" value="Проекты" />
-    </form>
-    <form action="servlet/EmployeAction" method="POST">
-        <input type="submit" value="Сотрудники" />
-    </form>
+<a href="servlet/ProjectAction">Проекты</a>
+<a href="servlet/TaskAction">Задачи</a>
+<a href="servlet/EmployeeAction">Сотрудники</a>
 </body>
 </html>

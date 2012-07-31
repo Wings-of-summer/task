@@ -9,11 +9,11 @@ public class Project {
     private String abbreviation;
     private String description;
 
-    public Project(int i, String n, String a, String d){
-        id = i;
-        name = n;
-        abbreviation = a;
-        description = d;
+    public Project(int id, String name, String abbreviation, String description) {
+        this.id = id;
+        this.name = name;
+        this.abbreviation = abbreviation;
+        this.description = description;
     }
 
     public int getId() {

@@ -25,7 +25,7 @@ public class HandlerProject {
             rs.next();
             project = new Project(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         return project;
     }
@@ -45,7 +45,7 @@ public class HandlerProject {
             }
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         return projects;
     }
@@ -58,7 +58,7 @@ public class HandlerProject {
             preparedStatement.setInt(1, id);
             rs = preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         return rs;
     }

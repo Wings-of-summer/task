@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author asya
  */
-public class DeleteProjectAction implements Action {
+public class DeleteProjectAction implements IAction {
     public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         int answer = HandlerProject.deleteProject(Integer.parseInt(request.getParameter("id")));
         if(answer != 0){
             String previousPage = "ProjectAction";
             request.setAttribute("previousPage", previousPage);
-            return "/successful.jsp";
+            return "ProjectAction";
         }
         return "/error.jsp";
     }

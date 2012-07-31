@@ -5,11 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Asya
- * Date: 17.07.12
- * Time: 9:30
- * To change this template use File | Settings | File Templates.
+ * @author asya
  */
 public class DataBaseConnection {
     private static DataBaseConnection instance;
@@ -17,14 +13,12 @@ public class DataBaseConnection {
 
     private DataBaseConnection() {
         try {
-            try {
-                Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
             connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/test", "sa", "");
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

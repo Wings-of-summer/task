@@ -7,8 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author asya
  */
-public class ChangeProjectAction implements IAction {
-    public String process(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        return null;
-    }
+public interface IAction {
+    public String process(HttpServletRequest request, HttpServletResponse response)
+          throws ServletException;
 }

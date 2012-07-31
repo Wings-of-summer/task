@@ -1,6 +1,6 @@
 package com.asya.gotovskaya.trainingtask.controller;
 
-import com.asya.gotovskaya.trainingtask.action.Action;
+import com.asya.gotovskaya.trainingtask.action.IAction;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,35 +10,35 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Asya
- * Date: 16.07.12
- * Time: 11:03
- * To change this template use File | Settings | File Templates.
+ * @author asya
  */
 public class Controller extends HttpServlet{
     @Override
     public void init() throws ServletException {
-        super.init();    //To change body of overridden methods use File | Settings | File Templates.
+        super.init();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getPathInfo().substring(1);
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+
+        String name = req.getPathInfo();
+        name = name.substring(1);
         String viewName = "/error.jsp";
         try{
             name = "com.asya.gotovskaya.trainingtask.action." + name;
             Class c = getClass().getClassLoader().loadClass(name);
-            Action action = (Action)c.newInstance();
+            IAction action = (IAction)c.newInstance();
             viewName = action.process(req, resp);
 
 
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         RequestDispatcher dispatcher = req.getRequestDispatcher(viewName);
         dispatcher.forward(req, resp);

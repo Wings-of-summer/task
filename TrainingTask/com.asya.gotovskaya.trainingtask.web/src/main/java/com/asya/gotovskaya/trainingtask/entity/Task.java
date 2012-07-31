@@ -8,18 +8,22 @@ import java.util.Date;
 public class Task {
     private int id;
     private String name;
+    private Project project;
     private int hours;
     private Date start;
     private Date finish;
+    private Employee employee;
     private String state;
 
-    public Task (int i, String n, int h, Date s, Date f, String st){
-        id = i;
-        name = n;
-        hours = h;
-        start = s;
-        finish = f;
-        state = st;
+    public Task(int id, String name, Project project, int hours, Date start, Date finish, Employee employee, String state) {
+        this.id = id;
+        this.name = name;
+        this.project = project;
+        this.hours = hours;
+        this.start = start;
+        this.finish = finish;
+        this.employee = employee;
+        this.state = state;
     }
 
     public int getId() {
@@ -28,6 +32,10 @@ public class Task {
 
     public String getName() {
         return name;
+    }
+
+    public Project getProject() {
+        return project;
     }
 
     public int getHours() {
@@ -40,6 +48,10 @@ public class Task {
 
     public Date getFinish() {
         return finish;
+    }
+
+    public Employee getEmployee() {
+        return employee;
     }
 
     public String getState() {
