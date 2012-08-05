@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="main.jsp" %>
+
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -32,7 +34,7 @@
                 Сокращенное название проекта
             </td>
             <td>
-                <c:out value="${selectedTask.project.abbreviation}"/>
+                <c:out value="${selectedTask.project.abbreviation} ${selectedTask.project.name}"/>
             </td>
         </tr>
         <tr>

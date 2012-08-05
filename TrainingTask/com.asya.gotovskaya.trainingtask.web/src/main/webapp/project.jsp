@@ -1,12 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<%--
-  @author asya
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="main.jsp" %>
 
 <html>
 <head><title>Simple jsp page</title></head>
@@ -18,6 +15,9 @@
         </c:forEach>
     </select>
     <input type="submit" value="Просмотреть"/>
+</form>
+<form action="AddProjectAction">
+    <input type="submit" value="Добавить">
 </form>
 <c:if test="${selected != null}">
     <table>
@@ -57,6 +57,10 @@
     <form action="DeleteProjectAction">
         <input type="hidden" name="id" value="${selected.id}">
         <input type="submit" value="Удалить">
+    </form>
+    <form method="POST" action="ChangeProjectAction">
+        <input type="hidden" name="id" value="${selected.id}">
+        <input type="submit" value="Изменить">
     </form>
 </c:if>
 </body>

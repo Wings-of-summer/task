@@ -50,22 +50,26 @@ public class HandlerEmployee {
         return employee;
     }
 
-    public static int deleteEmployee(int id) {
+    public static void deleteEmployee(int id) {
         Connection connection = DataBaseConnection.getInstance().getConnection();
-        int rs = 0;
         try {
+            PreparedStatement preparedStatementEmployee = connection.prepareStatement("select id_task " +
+                    "from employees_tasks where id_employee=?");
+            preparedStatementEmployee.setInt(1, id);
+            ResultSet resultSet = preparedStatementEmployee.executeQuery();
+            while (resultSet.next()) {
+                HandlerTask.deleteTask(resultSet.getInt(1));
+            }
             PreparedStatement preparedStatement = connection.prepareStatement("delete from employees where id_employee=?");
             preparedStatement.setInt(1, id);
-            rs = preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
     }
 
-    private static int addEmployee(String lastName, String name, String middleName, String post){
+    private static void addEmployee(String lastName, String name, String middleName, String post) {
         Connection connection = DataBaseConnection.getInstance().getConnection();
-        int rs = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO employees" +
                     "(last_name, name, middle_name, post) values (?, ?, ?, ?)");
@@ -73,16 +77,14 @@ public class HandlerEmployee {
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, middleName);
             preparedStatement.setString(4, post);
-            rs = preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
     }
 
-    private static int changeEmployee(int id, String lastName, String name, String middleName, String post){
+    private static void changeEmployee(int id, String lastName, String name, String middleName, String post) {
         Connection connection = DataBaseConnection.getInstance().getConnection();
-        int rs = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE employees " +
                     "SET last_name=?, name=?, middle_name=?, post=? WHERE id_employee=?");
@@ -91,25 +93,24 @@ public class HandlerEmployee {
             preparedStatement.setString(3, middleName);
             preparedStatement.setString(4, post);
             preparedStatement.setInt(5, id);
-            rs = preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
     }
 
-    public static void saveChangeEmployee(List<String> values){
-        if(values.get(0).equals("") || values.get(0).equals("01")){
-           addEmployee(values.get(1), values.get(2), values.get(3), values.get(4));
+    public static void saveChangeEmployee(List<String> values) {
+        if (values.get(0).equals("") || values.get(0).equals("01")) {
+            addEmployee(values.get(1), values.get(2), values.get(3), values.get(4));
             return;
         }
         int id = Integer.parseInt(values.get(0));
         changeEmployee(id, values.get(1), values.get(2), values.get(3), values.get(4));
     }
 
-    public static Employee createTemporaryEmployee(List<String> values){
+    public static Employee createTemporaryEmployee(List<String> values) {
         int id = 0;
-        if(values.get(0).equals("")){
+        if (values.get(0).equals("")) {
             id = 01;
         } else {
             id = Integer.parseInt(values.get(0));

@@ -13,9 +13,9 @@ import java.util.List;
  * @author asya
  */
 public class HandlerTask {
-    private static Task task;
     private static Project project;
     private static Employee employee;
+    private static Task task;
 
     public static List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<Task>();
@@ -49,10 +49,12 @@ public class HandlerTask {
             PreparedStatement preparedStatementProject = connection.prepareStatement("select id_project from " +
                     "projects_tasks where id_task=?");
             preparedStatementProject.setInt(1, id);
-            ResultSet rsProject = preparedStatement.executeQuery();
+            ResultSet rsProject = preparedStatementProject.executeQuery();
             if (rsProject != null) {
                 rsProject.next();
                 project = HandlerProject.createProject(rsProject.getInt(1));
+            } else {
+                project = HandlerProject.createEmptyProject();
             }
             PreparedStatement preparedStatementEmployee = connection.prepareStatement("select id_employee from " +
                     "employees_tasks where id_task=?");
@@ -70,22 +72,19 @@ public class HandlerTask {
         return task;
     }
 
-    public static int deleteTask(int id) {
+    public static void deleteTask(int id) {
         Connection connection = DataBaseConnection.getInstance().getConnection();
-        int rs = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("delete from tasks where id_task=?");
             preparedStatement.setInt(1, id);
-            rs = preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
     }
 
-    private static int addTask(String name, Project project, int hours, Date start, Date finish, Employee employee, String state) {
+    private static void addTask(String name, Project project, int hours, Date start, Date finish, Employee employee, String state) {
         Connection connection = DataBaseConnection.getInstance().getConnection();
-        int rs = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO tasks" +
                     "(task_name, hours, start_date, finish_date, state) values (?, ?, ?, ?, ?)");
@@ -94,16 +93,10 @@ public class HandlerTask {
             preparedStatement.setDate(3, start);
             preparedStatement.setDate(4, finish);
             preparedStatement.setString(5, state);
-            rs = preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
 
-            PreparedStatement preparedStatementNewId = connection.prepareStatement("SELECT id_task FROM tasks " +
-                    "WHERE task_name=? AND hours=? AND start_date=? AND finish_date=? AND state=?");
-            preparedStatement.setString(1, name);
-            preparedStatementNewId.setInt(2, hours);
-            preparedStatementNewId.setDate(3, start);
-            preparedStatementNewId.setDate(4, finish);
-            preparedStatementNewId.setString(5, state);
-            ResultSet resultSet = preparedStatementNewId.executeQuery();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT IDENTITY() from tasks");
             resultSet.next();
             int id = resultSet.getInt(1);
 
@@ -121,12 +114,10 @@ public class HandlerTask {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
     }
 
-    private static int changeTask(int id, String name, Project project, int hours, Date start, Date finish, Employee employee, String state) {
+    private static void changeTask(int id, String name, Project project, int hours, Date start, Date finish, Employee employee, String state) {
         Connection connection = DataBaseConnection.getInstance().getConnection();
-        int rs = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE tasks " +
                     "SET task_name=?, hours=?, start_date=?, finish_date=?, state=? WHERE id_task=?");
@@ -136,37 +127,36 @@ public class HandlerTask {
             preparedStatement.setDate(4, finish);
             preparedStatement.setString(5, state);
             preparedStatement.setInt(6, id);
-            rs = preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
 
-            PreparedStatement preparedStatementProject = connection.prepareStatement("INSERT INTO " +
-                    "projects_tasks(id_project, id_task) values (?, ?);");
+            PreparedStatement preparedStatementProject = connection.prepareStatement("UPDATE projects_tasks " +
+                    "SET id_project = ? WHERE id_task = ?");
             preparedStatementProject.setInt(1, project.getId());
             preparedStatementProject.setInt(2, id);
             preparedStatementProject.executeUpdate();
 
-            PreparedStatement preparedStatementEmployee = connection.prepareStatement("INSERT INTO " +
-                    "employees_tasks(id_employee, id_task) values (?, ?);");
+            PreparedStatement preparedStatementEmployee = connection.prepareStatement("UPDATE employees_tasks " +
+                    "SET id_employee = ? WHERE id_task = ?");
             preparedStatementEmployee.setInt(1, employee.getId());
             preparedStatementEmployee.setInt(2, id);
             preparedStatementEmployee.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return rs;
     }
 
     public static void saveChangeTask(List<String> values) {
         int hours = Integer.parseInt(values.get(2));
         Date start = Date.valueOf(values.get(3));
         Date finish = Date.valueOf(values.get(4));
-        project = HandlerProject.createProject(Integer.parseInt(values.get(6)));
-        employee = HandlerEmployee.createEmployee(Integer.parseInt(values.get(7)));
+        Project newProject = HandlerProject.createProject(Integer.parseInt(values.get(6)));
+        Employee newEmployee = HandlerEmployee.createEmployee(Integer.parseInt(values.get(7)));
         if (values.get(0).equals("") || values.get(0).equals("01")) {
-            addTask(values.get(1), project, hours, start, finish, employee, values.get(5));
+            addTask(values.get(1), newProject, hours, start, finish, newEmployee, values.get(5));
             return;
         }
         int id = Integer.parseInt(values.get(0));
-        changeTask(id, values.get(1), project, hours, start, finish, employee, values.get(5));
+        changeTask(id, values.get(1), newProject, hours, start, finish, newEmployee, values.get(5));
     }
 
     public static Task createTemporaryTask(List<String> values) {

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="main.jsp" %>
 
 <html>
 <head>
@@ -17,16 +18,30 @@
                 Сокращенное название проекта
             </td>
             <td>
-                <select name="idProject" size="1">
-                    <c:if test="${task != null}">
-                        <option selected="selected" value="${task.project.id}">${task.project.abbreviation}</option>
-                    </c:if>
-                    <c:forEach var="project" items="${projects}">
-                        <c:if test="${project != task.project}">
-                            <option value="${project.id}">${project.abbreviation}</option>
-                        </c:if>
-                    </c:forEach>
-                </select>
+                <c:choose>
+                    <c:when test="${imProject.name == null}">
+                        <select name="idProject" size="1">
+
+                            <c:if test="${task != null}">
+                                <option selected="selected"
+                                        value="${task.project.id}">${task.project.abbreviation}</option>
+                            </c:if>
+
+                            <c:forEach var="project" items="${projects}">
+                                <c:if test="${project.id != task.project.id}">
+                                    <option value="${project.id}">${project.abbreviation}</option>
+                                </c:if>
+                            </c:forEach>
+
+                        </select>
+                    </c:when>
+                    <c:when test="${imProject.name != null}">
+                        <c:out value="${imProject.abbreviation}"/>
+                        <input type="hidden" name="imProject" value="${imProject.id}">
+                        <input type="hidden" name="idProject" value="${imProject.id}">
+                    </c:when>
+                </c:choose>
+
             </td>
         </tr>
         <tr>
@@ -72,7 +87,7 @@
                                 ${task.employee.name} ${task.employee.middleName}</option>
                     </c:if>
                     <c:forEach var="employee" items="${employees}">
-                        <c:if test="${employee != task.employee}">
+                        <c:if test="${employee.id != task.employee.id}">
                             <option value="${employee.id}"> ${employee.lastName} ${employee.name} ${employee.middleName}</option>
                         </c:if>
                     </c:forEach>
@@ -100,7 +115,7 @@
     <input type="hidden" name="id" value="${task.id}">
     <input type="submit" value="Сохранить">
 </form>
-<form action="EmployeeAction">
+<form action="TaskAction">
     <input type="submit" value="Отмена">
 </form>
 </body>

@@ -12,12 +12,6 @@
         <servlet-name>Controller</servlet-name>
         <url-pattern>/servlet/*</url-pattern>
     </servlet-mapping>
-    <jsp-config>
-        <jsp-property-group>
-            <url-pattern>*.jsp</url-pattern>
-            <include-prelude>/main.jsp</include-prelude>
-        </jsp-property-group>
-    </jsp-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

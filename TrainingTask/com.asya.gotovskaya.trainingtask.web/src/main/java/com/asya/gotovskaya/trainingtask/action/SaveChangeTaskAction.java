@@ -32,6 +32,11 @@ public class SaveChangeTaskAction implements IAction {
             return "/enterTask.jsp";
         }
         HandlerTask.saveChangeTask(values);
+        if(request.getParameter("imProject") != null){
+            int idImProject = Integer.parseInt(request.getParameter("imProject"));
+            request.setAttribute("id", idImProject);
+            return "ChangeProjectAction";
+        }
         return "TaskAction";
     }
 }

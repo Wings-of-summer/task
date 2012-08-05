@@ -1,0 +1,51 @@
+<project name="AppBuilder" default="war" basedir=".">
+
+    <property name="root.dir" value="."/>
+    <property name="lib.dir" value="com.asya.gotovskaya.trainingtask.web/lib"/>
+    <property name="src.dir" value="./com.asya.gotovskaya.trainingtask.web/src/main/java/com/asya/gotovskaya/trainingtask"/>
+    <property name="conf.dir" value="com.asya.gotovskaya.trainingtask.web/src/main/webapp/WEB-INF"/>
+    <property name="web.content" value="com.asya.gotovskaya.trainingtask.web/src/main/webapp"/>
+    <property name="project.name" value="com.asya.gotovskaya.trainingtask.web"/>
+    <property name="build.dir" value="com.asya.gotovskaya.trainingtask.web/build"/>
+    <property name="libDB.dir" value="lib"/>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="servlet-api.jar"/>
+    </path>
+
+    <target name="clean">
+        <echo>Cleaning the ${build.dir}</echo>
+        <delete dir="${build.dir}"/>
+    </target>
+    <target name="init" depends="clean">
+        <echo>Creating the build directory</echo>
+        <mkdir dir="${build.dir}/WEB-INF/classes"/>
+        <mkdir dir="${build.dir}/WEB-INF/lib"/>
+    </target>
+    <target name="compile" depends="init">
+        <echo>Compile the source files</echo>
+        <javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+    <target name="copy" depends="compile">
+        <copy todir="${build.dir}/WEB-INF">
+            <fileset dir="${conf.dir}"/>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="${web.content}"/>
+        </copy>
+        <copy todir="${build.dir}/WEB-INF/lib">
+            <fileset dir="${lib.dir}" excludes="servlet-api.jar"/>
+        </copy>
+        <copy todir="${build.dir}/WEB-INF/lib">
+            <fileset dir="${libDB.dir}"/>
+        </copy>
+    </target>
+    <target name="war" depends="copy">
+        <echo>Building the war file</echo>
+        <war destfile="distr/${project.name}.war" webxml="${build.dir}/WEB-INF/web.xml">
+            <fileset dir="${build.dir}"/>
+        </war>
+    </target>
+</project>
