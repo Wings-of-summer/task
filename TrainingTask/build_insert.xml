@@ -1,4 +1,4 @@
-<project name="ExecuteSchema" default="schemax">
+﻿<project name="ExecuteSchema" default="schemax">
 <target name="schemax" description="Execute the schema">
         <sql
                 driver="org.hsqldb.jdbcDriver"

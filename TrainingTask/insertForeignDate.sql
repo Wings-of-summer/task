@@ -1,4 +1,4 @@
-INSERT INTO projects_tasks(id_project, id_task) values (0, 0);
+﻿INSERT INTO projects_tasks(id_project, id_task) values (0, 0);
 INSERT INTO projects_tasks(id_project, id_task) values (0, 1);
 INSERT INTO projects_tasks(id_project, id_task) values (1, 2);
 INSERT INTO projects_tasks(id_project, id_task) values (2, 3);
