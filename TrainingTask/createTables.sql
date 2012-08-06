@@ -1,4 +1,4 @@
-﻿create table projects (
+create table projects (
 	id_project integer IDENTITY, 
 	project_name varchar(100), 
 	abbreviation varchar(50), 

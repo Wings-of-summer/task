@@ -6,7 +6,7 @@
                 userid="sa"
                 password=""
                 print="yes"
-                src="insertForeignDate.sql"
+                src="insertForeignData.sql"
                 caching="false"
                 showheaders="true"
                 >

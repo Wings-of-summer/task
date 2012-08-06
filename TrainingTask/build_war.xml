@@ -8,6 +8,7 @@
     <property name="project.name" value="com.asya.gotovskaya.trainingtask.web"/>
     <property name="build.dir" value="com.asya.gotovskaya.trainingtask.web/build"/>
     <property name="libDB.dir" value="lib"/>
+	<property name="distr.dir" value="distr"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="servlet-api.jar"/>
@@ -44,7 +45,7 @@
     </target>
     <target name="war" depends="copy">
         <echo>Building the war file</echo>
-        <war destfile="distr/${project.name}.war" webxml="${build.dir}/WEB-INF/web.xml">
+        <war destfile="${distr.dir}/${project.name}.war" webxml="${build.dir}/WEB-INF/web.xml">
             <fileset dir="${build.dir}"/>
         </war>
     </target>

@@ -6,7 +6,7 @@
                 userid="sa"
                 password=""
                 print="yes"
-                src="insertDate.sql"
+                src="insertData.sql"
                 caching="false"
                 showheaders="true"
                 >
