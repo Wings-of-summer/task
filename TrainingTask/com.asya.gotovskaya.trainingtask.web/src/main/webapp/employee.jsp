@@ -1,5 +1,7 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="main.jsp" %>
 
@@ -9,68 +11,55 @@
     <title>Simple jsp page</title>
 </head>
 <body>
-<form method="POST" action="EmployeeAction">
-    <select name="selectedId" size="1">
-        <c:forEach var="employee" items="${employees}">
-            <option value="${employee.id}">${employee.lastName} ${employee.name} ${employee.middleName}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" value="Просмотреть"/>
-</form>
-<form action="AddEmployeeAction">
-    <input type="submit" value="Добавить">
-</form>
-<c:if test="${selectedEmployee != null}">
-    <table>
+<form action="DeleteTaskAction" method="post">
+    <table bgcolor="#F0FFFF" border="1" bordercolor="#838B8B">
         <tr>
+            <td>
+
+            </td>
             <td>
                 Идентификатор
             </td>
             <td>
-                <c:out value="${selectedEmployee.id}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Фамилия
             </td>
-            <td>
-                <c:out value="${selectedEmployee.lastName}"/>
-            </td>
-        </tr>
-        <tr>
             <td>
                 Имя
             </td>
             <td>
-                <c:out value="${selectedEmployee.name}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Отчество
             </td>
             <td>
-                <c:out value="${selectedEmployee.middleName}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Должность
             </td>
-            <td>
-                <c:out value="${selectedEmployee.post}"/>
-            </td>
         </tr>
+        <c:forEach var="employee" items="${employees}">
+            <tr>
+                <td>
+                    <input type="checkbox" name="${employee.id}" value="${employee.id}">
+                </td>
+                <td>
+                    <c:out value="${employee.id}"/>
+                </td>
+                <td>
+                    <a href="ChangeEmployeeAction?id=${employee.id}"><c:out value="${employee.lastName}"/></a>
+                </td>
+                <td>
+                    <c:out value="${employee.name}"/>
+                </td>
+                <td>
+                    <c:out value="${employee.middleName}"/>
+                </td>
+                <td>
+                    <c:out value="${employee.post}"/>
+                </td>
+            </tr>
+        </c:forEach>
     </table>
-    <form action="DeleteEmployeeAction">
-        <input type="hidden" name="id" value="${selectedEmployee.id}">
-        <input type="submit" value="Удалить">
-    </form>
-    <form action="ChangeEmployeeAction">
-        <input type="hidden" name="id" value="${selectedEmployee.id}">
-        <input type="submit" value="Изменить">
-    </form>
-</c:if>
+    <input type="submit" value="Удалить">
+</form>
+<form action="AddEmployeeAction">
+    <input type="submit" value="Добавить">
+</form>
 </body>
 </html>

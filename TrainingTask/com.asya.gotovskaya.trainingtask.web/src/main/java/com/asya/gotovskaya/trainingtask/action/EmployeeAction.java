@@ -18,11 +18,6 @@ public class EmployeeAction implements IAction {
             return "/error.jsp";
         }
         request.setAttribute("employees", employees);
-        if (request.getParameter("selectedId") != null) {
-            int selectedId = Integer.parseInt(request.getParameter("selectedId"));
-            Employee employee = HandlerEmployee.createEmployee(selectedId);
-            request.setAttribute("selectedEmployee", employee);
-        }
         return "/employee.jsp";
     }
 }

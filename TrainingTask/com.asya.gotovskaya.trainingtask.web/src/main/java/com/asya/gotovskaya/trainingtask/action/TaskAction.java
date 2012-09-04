@@ -18,11 +18,6 @@ public class TaskAction implements IAction {
             return "/error.jsp";
         }
         request.setAttribute("tasks", tasks);
-        if (request.getParameter("selectedId") != null) {
-            int selectedId = Integer.parseInt(request.getParameter("selectedId"));
-            Task task = HandlerTask.createTask(selectedId);
-            request.setAttribute("selectedTask", task);
-        }
         return "/task.jsp";
     }
 }

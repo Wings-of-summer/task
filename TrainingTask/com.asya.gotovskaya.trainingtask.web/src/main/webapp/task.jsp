@@ -1,3 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="main.jsp" %>
@@ -8,92 +11,75 @@
     <title>Simple jsp page</title>
 </head>
 <body>
-<form method="POST" action="TaskAction">
-    <select name="selectedId" size="1">
-        <c:forEach var="task" items="${tasks}">
-            <option value="${task.id}">${task.name}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" value="Просмотреть"/>
-</form>
-<form action="AddTaskAction">
-    <input type="submit" value="Добавить">
-</form>
-<c:if test="${selectedTask != null}">
-    <table>
+<form action="DeleteTaskAction" method="post">
+    <table bgcolor="#F0FFFF" border="1" bordercolor="#838B8B">
         <tr>
+            <td>
+
+            </td>
             <td>
                 Идентификатор
             </td>
             <td>
-                <c:out value="${selectedTask.id}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Сокращенное название проекта
             </td>
-            <td>
-                <c:out value="${selectedTask.project.abbreviation} ${selectedTask.project.name}"/>
-            </td>
-        </tr>
-        <tr>
             <td>
                 Название
             </td>
             <td>
-                <c:out value="${selectedTask.name}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Колличество часов
             </td>
-            <td>
-                <c:out value="${selectedTask.hours}"/>
-            </td>
-        </tr>
-        <tr>
             <td>
                 Дата начала
             </td>
             <td>
-                <c:out value="${selectedTask.start}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Дата окончания
             </td>
-            <td>
-                <c:out value="${selectedTask.finish}"/>
-            </td>
-        </tr>
-        <tr>
             <td>
                 Исполнитель
             </td>
             <td>
-                <c:out value="${selectedTask.employee.lastName} ${selectedTask.employee.name} ${selectedTask.employee.middleName}"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
                 Состояние
             </td>
-            <td>
-                <c:out value="${selectedTask.state}"/>
-            </td>
         </tr>
+        <c:forEach var="task" items="${tasks}">
+            <tr>
+                <td>
+                    <input type="checkbox" name="${task.id}" value="${task.id}">
+                </td>
+                <td>
+                    <c:out value="${task.id}"/>
+                </td>
+                <td>
+                    <c:out value="${task.project.abbreviation}"/>
+                </td>
+                <td>
+                    <a href="ChangeTaskAction?id=${task.id}"><c:out value="${task.name}"/></a>
+                </td>
+                <td>
+                    <c:out value="${task.hours}"/>
+                </td>
+                <td>
+                    <c:out value="${task.start}"/>
+                </td>
+                <td>
+                    <c:out value="${task.finish}"/>
+                </td>
+                <td>
+                    <c:out value="${task.employee.lastName} ${task.employee.name} ${task.employee.middleName}"/>
+                </td>
+                <td>
+                    <c:out value="${task.state}"/>
+                </td>
+            </tr>
+        </c:forEach>
     </table>
-    <form action="DeleteTaskAction">
-        <input type="hidden" name="id" value="${selectedTask.id}">
-        <input type="submit" value="Удалить">
-    </form>
-    <form action="ChangeTaskAction">
-        <input type="hidden" name="id" value="${selectedTask.id}">
-        <input type="submit" value="Изменить">
-    </form>
-</c:if>
+    <input type="submit" value="Удалить">
+</form>
+
+<form action="AddTaskAction">
+    <input type="submit" value="Добавить">
+</form>
+
 </body>
 </html>

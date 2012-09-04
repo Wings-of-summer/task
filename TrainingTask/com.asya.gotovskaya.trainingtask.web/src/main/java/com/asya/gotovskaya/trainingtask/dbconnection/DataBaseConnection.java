@@ -3,6 +3,7 @@ package com.asya.gotovskaya.trainingtask.dbconnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * @author asya
@@ -14,7 +15,8 @@ public class DataBaseConnection {
     private DataBaseConnection() {
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/test", "sa", "");
+            Map<String, String> databaseProperty = PropertyReader.getDatabaseProperties();
+            connection = DriverManager.getConnection(databaseProperty.get("database"), databaseProperty.get("user"), "");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
