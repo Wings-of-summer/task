@@ -4,7 +4,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 
 <html>
-<head><title>Simple jsp page</title></head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
 <body>
 <a href="ProjectAction">Проекты</a>
 <a href="TaskAction">Задачи</a>

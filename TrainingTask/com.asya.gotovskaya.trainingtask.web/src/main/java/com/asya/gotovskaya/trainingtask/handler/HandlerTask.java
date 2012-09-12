@@ -22,14 +22,16 @@ public class HandlerTask {
         Connection connection = DataBaseConnection.getInstance().getConnection();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select id_task from tasks");
-            if (rs == null) {
+            ResultSet resultSet = statement.executeQuery("select id_task from tasks");
+            if (resultSet == null) {
                 return null;
             }
-            while (rs.next()) {
-                Task task = createTask(rs.getInt(1));
+            while (resultSet.next()) {
+                Task task = createTask(resultSet.getInt(1));
                 tasks.add(task);
             }
+
+            resultSet.close();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,8 +44,8 @@ public class HandlerTask {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select*from tasks where id_task=?");
             preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs == null) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet == null) {
                 return null;
             }
             PreparedStatement preparedStatementProject = connection.prepareStatement("select id_project from " +
@@ -64,8 +66,16 @@ public class HandlerTask {
                 rsEmployee.next();
                 employee = HandlerEmployee.createEmployee(rsEmployee.getInt(1));
             }
-            rs.next();
-            task = new Task(rs.getInt(1), rs.getString(2), project, rs.getInt(3), rs.getDate(4), rs.getDate(5), employee, rs.getString(6));
+            resultSet.next();
+            task = new Task(resultSet.getInt(1), resultSet.getString(2), project, resultSet.getInt(3),
+                    resultSet.getDate(4), resultSet.getDate(5), employee, resultSet.getString(6));
+
+            resultSet.close();
+            rsEmployee.close();
+            rsProject.close();
+            preparedStatement.close();
+            preparedStatementEmployee.close();
+            preparedStatementProject.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,6 +88,8 @@ public class HandlerTask {
             PreparedStatement preparedStatement = connection.prepareStatement("delete from tasks where id_task=?");
             preparedStatement.setInt(1, id);
             int rs = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,6 +123,10 @@ public class HandlerTask {
             preparedStatementEmployee.setInt(1, employee.getId());
             preparedStatementEmployee.setInt(2, id);
             preparedStatementEmployee.executeUpdate();
+
+            preparedStatement.close();
+            preparedStatementEmployee.close();
+            preparedStatementProject.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,6 +156,10 @@ public class HandlerTask {
             preparedStatementEmployee.setInt(1, employee.getId());
             preparedStatementEmployee.setInt(2, id);
             preparedStatementEmployee.executeUpdate();
+
+            preparedStatement.close();
+            preparedStatementEmployee.close();
+            preparedStatementProject.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -151,6 +171,7 @@ public class HandlerTask {
         Date finish = Date.valueOf(values.get(4));
         Project newProject = HandlerProject.createProject(Integer.parseInt(values.get(6)));
         Employee newEmployee = HandlerEmployee.createEmployee(Integer.parseInt(values.get(7)));
+
         if (values.get(0).equals("") || values.get(0).equals("01")) {
             addTask(values.get(1), newProject, hours, start, finish, newEmployee, values.get(5));
             return;

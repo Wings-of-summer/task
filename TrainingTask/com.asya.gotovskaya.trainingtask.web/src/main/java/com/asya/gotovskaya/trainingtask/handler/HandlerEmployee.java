@@ -18,14 +18,16 @@ public class HandlerEmployee {
         Connection connection = DataBaseConnection.getInstance().getConnection();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select id_employee from employees");
-            if (rs == null) {
+            ResultSet resultSet = statement.executeQuery("select id_employee from employees");
+
+            if (resultSet == null) {
                 return null;
             }
-            while (rs.next()) {
-                Employee employee = createEmployee(rs.getInt(1));
+            while (resultSet.next()) {
+                Employee employee = createEmployee(resultSet.getInt(1));
                 employees.add(employee);
             }
+            resultSet.close();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,12 +40,16 @@ public class HandlerEmployee {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select*from employees where id_employee=?");
             preparedStatement.setInt(1, id);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs == null) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet == null) {
                 return null;
             }
-            rs.next();
-            employee = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+            resultSet.next();
+            employee = new Employee(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                    resultSet.getString(4), resultSet.getString(5));
+            resultSet.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -57,12 +63,19 @@ public class HandlerEmployee {
                     "from employees_tasks where id_employee=?");
             preparedStatementEmployee.setInt(1, id);
             ResultSet resultSet = preparedStatementEmployee.executeQuery();
+
+            preparedStatementEmployee.close();
+
             while (resultSet.next()) {
                 HandlerTask.deleteTask(resultSet.getInt(1));
             }
+            resultSet.close();
+
             PreparedStatement preparedStatement = connection.prepareStatement("delete from employees where id_employee=?");
             preparedStatement.setInt(1, id);
             int rs = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,6 +91,8 @@ public class HandlerEmployee {
             preparedStatement.setString(3, middleName);
             preparedStatement.setString(4, post);
             int rs = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,6 +109,8 @@ public class HandlerEmployee {
             preparedStatement.setString(4, post);
             preparedStatement.setInt(5, id);
             int rs = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -20,12 +20,16 @@ public class HandlerProject {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("select*from projects where id_project=?");
             preparedStatement.setInt(1, idSelect);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs == null) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet == null) {
                 return null;
             }
-            rs.next();
-            project = new Project(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+            resultSet.next();
+            project = new Project(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+
+            resultSet.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,14 +41,16 @@ public class HandlerProject {
         Connection connection = DataBaseConnection.getInstance().getConnection();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select id_project from projects");
-            if (rs == null) {
+            ResultSet resultSet = statement.executeQuery("select id_project from projects");
+
+            if (resultSet == null) {
                 return null;
             }
-            while (rs.next()) {
-                Project pr = createProject(rs.getInt(1));
+            while (resultSet.next()) {
+                Project pr = createProject(resultSet.getInt(1));
                 projects.add(pr);
             }
+            resultSet.close();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,12 +65,17 @@ public class HandlerProject {
                                 "from projects_tasks where id_project=?");
             preparedStatementEmployee.setInt(1, id);
             ResultSet resultSet = preparedStatementEmployee.executeQuery();
+            preparedStatementEmployee.close();
+
             while (resultSet.next()){
                 HandlerTask.deleteTask(resultSet.getInt(1));
             }
+            resultSet.close();
+
             PreparedStatement preparedStatement = connection.prepareStatement("delete from projects where id_project=?");
             preparedStatement.setInt(1, id);
             int rs = preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,6 +94,7 @@ public class HandlerProject {
                     "from projects_tasks where id_project=?");
             preparedStatement.setInt(1, projectId);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if (resultSet == null) {
                 return null;
             }
@@ -91,9 +103,13 @@ public class HandlerProject {
                 taskId = resultSet.getInt(1);
                 tasks.add(HandlerTask.createTask(taskId));
             }
+
+            resultSet.close();
+            preparedStatement.close();
+
             return tasks;
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         return null;
@@ -125,6 +141,10 @@ public class HandlerProject {
             resultSet.next();
             int id = resultSet.getInt(1);
             setIdNewProject(id);
+
+            resultSet.close();
+            preparedStatement.close();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,6 +160,8 @@ public class HandlerProject {
             preparedStatement.setString(3, description);
             preparedStatement.setInt(4, id);
             int rs = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

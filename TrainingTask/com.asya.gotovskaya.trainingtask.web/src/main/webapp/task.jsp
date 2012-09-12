@@ -8,9 +8,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Simple jsp page</title>
 </head>
 <body>
+
 <form action="DeleteTaskAction" method="post">
     <table bgcolor="#F0FFFF" border="1" bordercolor="#838B8B">
         <tr>

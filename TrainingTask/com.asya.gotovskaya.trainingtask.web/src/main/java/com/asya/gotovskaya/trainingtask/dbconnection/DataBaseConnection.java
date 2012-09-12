@@ -16,7 +16,8 @@ public class DataBaseConnection {
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             Map<String, String> databaseProperty = PropertyReader.getDatabaseProperties();
-            connection = DriverManager.getConnection(databaseProperty.get("database"), databaseProperty.get("user"), "");
+            connection = DriverManager.getConnection(databaseProperty.get("database"), databaseProperty.get("user"),
+                    databaseProperty.get("password"));
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -24,7 +25,7 @@ public class DataBaseConnection {
         }
     }
 
-    public static DataBaseConnection getInstance() {
+    public synchronized static DataBaseConnection getInstance() {
         if (instance == null) {
             instance = new DataBaseConnection();
         }

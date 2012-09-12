@@ -1,38 +1,41 @@
 package com.asya.gotovskaya.trainingtask.dbconnection;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author asya
  */
 public class PropertyReader {
 
-    private static String fileName = "database.properties";
-    private static String root = System.getProperty("file.separator");
-    private static Properties properties = new Properties();
+    private static final String FILE_NAME = "database.properties";
 
-    public static Map<String, String> getDatabaseProperties(){
-        Map<String, String> listProperties = new HashMap<String, String>();
+    public static Map<String, String> getDatabaseProperties() {
+        Map<String, String> mapProperties = new HashMap<String, String>();
         try {
-            FileInputStream inputStream = new FileInputStream(fileName);
+            InputStream inputStream = PropertyReader.class.getClassLoader().getResource(FILE_NAME).openStream();
+
+            Properties properties = new Properties();
             properties.load(inputStream);
 
             String database = properties.getProperty("database");
             String user = properties.getProperty("user");
+            String password = properties.getProperty("password");
 
-            listProperties.put("database", database);
-            listProperties.put("user", user);
+            mapProperties.put("database", database);
+            mapProperties.put("user", user);
+            mapProperties.put("password", password);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return  listProperties;
+        return mapProperties;
     }
 
 }

@@ -118,8 +118,18 @@
     <input type="hidden" name="id" value="${task.id}">
     <input type="submit" value="Сохранить">
 </form>
-<form action="TaskAction">
-    <input type="submit" value="Отмена">
-</form>
+<c:choose>
+    <c:when test="${imProject.name == null}">
+        <form action="TaskAction">
+            <input type="submit" value="Отмена">
+        </form>
+    </c:when>
+    <c:when test="${imProject.name != null}">
+        <form action="ChangeProjectAction">
+            <input type="hidden" name="id" value="${imProject.id}">
+            <input type="submit" value="Отмена">
+        </form>
+    </c:when>
+</c:choose>
 </body>
 </html>
